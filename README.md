@@ -79,11 +79,33 @@ src/
 │   ├── layout.tsx         # Root layout with header/footer
 │   ├── page.tsx           # Home page
 │   ├── quiz/              # Quiz routes
+│   │   ├── layout.tsx     # Quiz layout with progress bar
 │   │   ├── page.tsx       # Quiz overview page
-│   │   └── start/         # Quiz start route
-│   │       └── page.tsx   # Quiz start page
+│   │   ├── start/         # Quiz start route
+│   │   │   └── page.tsx   # Q1: Equipment selection
+│   │   ├── q2/            # Q2: Air quality concerns
+│   │   │   └── page.tsx   # Q2 page
+│   │   ├── q3/            # Q3: Equipment quantity
+│   │   │   └── page.tsx   # Q3 page
+│   │   ├── q4/            # Q4: Timeline
+│   │   │   └── page.tsx   # Q4 page
+│   │   ├── q5/            # Q5: Contact preferences
+│   │   │   └── page.tsx   # Q5 page
+│   │   ├── contact/       # Contact collection
+│   │   │   └── page.tsx   # Contact form
+│   │   └── thank-you/     # Thank you page
+│   │       └── page.tsx   # Success confirmation
+│   ├── api/               # API routes
+│   │   ├── submitQuiz/    # Quiz submission to Airtable
+│   │   │   └── route.ts   # POST endpoint
+│   │   ├── env-check/     # Environment variable check
+│   │   │   └── route.ts   # GET endpoint
+│   │   └── health/        # Health check
+│   │       └── route.ts   # GET endpoint
 │   └── health/            # Health check API
 │       └── route.ts       # Health endpoint
+├── context/               # React context
+│   └── quiz.tsx           # Quiz state management
 ├── globals.css            # Global styles with Tailwind
 └── types/                 # TypeScript type definitions
 ```
@@ -92,8 +114,16 @@ src/
 
 - **`/`** - Home page with welcome message and CTA
 - **`/quiz`** - Quiz overview page with "coming soon" message
-- **`/quiz/start`** - Quiz start page (placeholder)
+- **`/quiz/start`** - Q1: Equipment selection (Excavators, Wheel Loaders, Bulldozers, Other)
+- **`/quiz/q2`** - Q2: Air quality concerns (Cab dust, Diesel emissions, Silica, All of the above)
+- **`/quiz/q3`** - Q3: Equipment quantity (1 machine, 2–3 machines, 4+ machines)
+- **`/quiz/q4`** - Q4: Timeline (This quarter, Next quarter, Exploring options)
+- **`/quiz/q5`** - Q5: Contact preferences (On-site demo, Remote intro, Spec sheet)
+- **`/quiz/contact`** - Contact collection form (Name, Phone, Email)
+- **`/quiz/thank-you`** - Success confirmation page
 - **`/health`** - Health check API endpoint
+- **`/api/env-check`** - Environment variable status
+- **`/api/submitQuiz`** - Quiz submission to Airtable
 
 ## API Endpoints
 
@@ -109,6 +139,54 @@ Returns application status and version information.
   "version": "0.1.0",
   "timestamp": "2024-01-01T00:00:00.000Z",
   "status": "healthy"
+}
+```
+
+### Environment Check
+
+**GET** `/api/env-check`
+
+Returns environment variable configuration status.
+
+```json
+{
+  "hasKey": true,
+  "base": "app2En7eWbTDePsDw",
+  "tableName": "Leads",
+  "tableId": null,
+  "tablePath": "Leads"
+}
+```
+
+### Quiz Submission
+
+**POST** `/api/submitQuiz`
+
+Submits quiz answers and contact information to Airtable.
+
+**Request Body:**
+```json
+{
+  "answers": {
+    "Q1": "Excavators",
+    "Q2": "Cab dust",
+    "Q3": "2–3 machines",
+    "Q4": "Next quarter",
+    "Q5": "Yes, on-site demo"
+  },
+  "contact": {
+    "name": "John Doe",
+    "phone": "555-1234",
+    "email": "john@example.com"
+  },
+  "source": "qr-mailer-2025"
+}
+```
+
+**Response:**
+```json
+{
+  "ok": true
 }
 ```
 
@@ -133,8 +211,12 @@ npm run start
 Create a `.env.local` file for local development:
 
 ```env
-# Add any environment variables here
-NEXT_PUBLIC_APP_VERSION=0.1.0
+# Airtable Configuration
+AIRTABLE_API_KEY=your_personal_access_token_here
+AIRTABLE_BASE_ID=app2En7eWbTDePsDw
+AIRTABLE_TABLE_NAME=Leads
+# Optional: Use table ID instead of name for more reliable identification
+# AIRTABLE_TABLE_ID=tblXXXXXXXXXXXXXX
 ```
 
 ## Deployment
@@ -144,6 +226,7 @@ NEXT_PUBLIC_APP_VERSION=0.1.0
 1. Push your code to GitHub/GitLab
 2. Connect your repository to Vercel
 3. Deploy automatically on every push
+4. Set environment variables in Vercel dashboard
 
 ### Other Platforms
 
@@ -213,3 +296,5 @@ For questions or support, please contact the development team.
 **Built with ❤️ using Next.js, React, and Tailwind CSS**
 
 **Production deployment ready - Vercel auto-deploys on push to main**
+
+**Latest update: Full quiz flow with Airtable integration and TypeScript compliance**
