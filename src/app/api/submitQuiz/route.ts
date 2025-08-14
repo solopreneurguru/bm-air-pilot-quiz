@@ -23,6 +23,11 @@ interface AirtableFields {
     Q5: string;
 }
 
+interface AirtableErrorDetails {
+    error?: string;
+    [key: string]: unknown;
+}
+
 export async function POST(req: Request) {
     try {
         const { answers = {}, contact = { name: "", phone: "", email: "" }, source = "qr-mailer-2025" }: QuizSubmission = await req.json();
@@ -58,7 +63,7 @@ export async function POST(req: Request) {
 
         if (!res.ok) {
             const text = await res.text();
-            let details: any = null;
+            let details: AirtableErrorDetails | null = null;
             try { details = JSON.parse(text); } catch { }
             const errorPayload = details?.error || text || "Unknown Airtable error";
             return NextResponse.json({ ok: false, status: res.status, error: errorPayload }, { status: res.status });
