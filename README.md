@@ -211,3 +211,5 @@ For questions or support, please contact the development team.
 ---
 
 **Built with ❤️ using Next.js, React, and Tailwind CSS**
+
+**Production deployment ready - Vercel auto-deploys on push to main**
