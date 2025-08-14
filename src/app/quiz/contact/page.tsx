@@ -9,6 +9,11 @@ interface ApiResponse {
     status?: number;
 }
 
+interface ErrorWithMessage {
+    message: string;
+    [key: string]: unknown;
+}
+
 function ContactForm() {
     const router = useRouter();
     const qs = useSearchParams();
@@ -43,7 +48,7 @@ function ContactForm() {
             } else if (typeof e === 'string') {
                 errorMessage = e;
             } else if (e && typeof e === 'object' && 'message' in e) {
-                errorMessage = String((e as any).message);
+                errorMessage = String((e as ErrorWithMessage).message);
             }
             setErr(errorMessage);
         } finally {
