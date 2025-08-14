@@ -6,6 +6,7 @@ import { useState, Suspense } from "react";
 interface ApiResponse {
     ok: boolean;
     error?: string;
+    status?: number;
 }
 
 function ContactForm() {
@@ -28,12 +29,22 @@ function ContactForm() {
             });
             let data: ApiResponse = { ok: false };
             try { data = await res.json(); } catch { }
-            if (!res.ok) throw new Error(data?.error || `Submit failed (${res.status})`);
+            if (!res.ok) {
+                const errorMessage = data?.error || `Submit failed (${res.status})`;
+                throw new Error(errorMessage);
+            }
             reset();
             router.push("/quiz/thank-you");
         } catch (e: unknown) {
             console.error(e);
-            const errorMessage = e instanceof Error ? e.message : "Something went wrong";
+            let errorMessage = "Something went wrong";
+            if (e instanceof Error) {
+                errorMessage = e.message;
+            } else if (typeof e === 'string') {
+                errorMessage = e;
+            } else if (e && typeof e === 'object' && 'message' in e) {
+                errorMessage = String((e as any).message);
+            }
             setErr(errorMessage);
         } finally {
             setBusy(false);
