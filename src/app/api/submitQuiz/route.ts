@@ -26,7 +26,7 @@ interface AirtableFields {
 export async function POST(req: Request) {
     try {
         const { answers = {}, contact = { name: "", phone: "", email: "" }, source = "qr-mailer-2025" }: QuizSubmission = await req.json();
-        const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE_NAME } = process.env as Record<string, string>;
+        const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE_NAME, AIRTABLE_TABLE_ID } = process.env as Record<string, string>;
 
         if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID || !AIRTABLE_TABLE_NAME) {
             return NextResponse.json({ ok: false, error: "Missing env" }, { status: 500 });
@@ -45,7 +45,8 @@ export async function POST(req: Request) {
             Q5: answers.Q5 || "",
         };
 
-        const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
+        const tablePath = encodeURIComponent(AIRTABLE_TABLE_ID || AIRTABLE_TABLE_NAME || "");
+        const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tablePath}`;
         const res = await fetch(url, {
             method: "POST",
             headers: {
@@ -56,8 +57,11 @@ export async function POST(req: Request) {
         });
 
         if (!res.ok) {
-            const t = await res.text();
-            return NextResponse.json({ ok: false, error: t }, { status: 500 });
+            const text = await res.text();
+            let details: any = null;
+            try { details = JSON.parse(text); } catch { }
+            const errorPayload = details?.error || text || "Unknown Airtable error";
+            return NextResponse.json({ ok: false, status: res.status, error: errorPayload }, { status: res.status });
         }
 
         return NextResponse.json({ ok: true });
