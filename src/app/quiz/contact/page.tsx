@@ -1,14 +1,14 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuiz } from "@/context/quiz";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
 interface ApiResponse {
     ok: boolean;
     error?: string;
 }
 
-export default function Contact() {
+function ContactForm() {
     const router = useRouter();
     const qs = useSearchParams();
     const source = qs.get("src") || "qr-mailer-2025";
@@ -73,5 +73,13 @@ export default function Contact() {
                 {busy ? "Submitting…" : "Submit"}
             </button>
         </form>
+    );
+}
+
+export default function Contact() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ContactForm />
+        </Suspense>
     );
 } 
