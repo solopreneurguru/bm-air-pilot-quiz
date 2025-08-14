@@ -1,10 +1,15 @@
 import { NextRequest } from "next/server";
 import QRCode from "qrcode";
 
-export async function GET(req: NextRequest, { params }: { params: { code: string } }) {
-    const code = params.code || "qr-mailer-2025";
+interface RouteParams {
+    params: Promise<{ code: string }>;
+}
+
+export async function GET(req: NextRequest, { params }: RouteParams) {
+    const { code } = await params;
+    const codeValue = code || "qr-mailer-2025";
     const origin = req.nextUrl.origin;
-    const target = `${origin}/q/${encodeURIComponent(code)}`;
+    const target = `${origin}/q/${encodeURIComponent(codeValue)}`;
 
     const svg = await QRCode.toString(target, {
         type: "svg",
