@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
 
+interface ScanLogFields {
+    Code: string;
+    UserAgent: string;
+    Referer: string;
+    IP: string;
+}
+
 export async function GET(request: Request, context: { params: { code: string } }) {
     const code = context.params?.code || "qr-mailer-2025";
     const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_SCANS_TABLE_ID, AIRTABLE_SCANS_TABLE_NAME } =
@@ -11,7 +18,7 @@ export async function GET(request: Request, context: { params: { code: string } 
             const referer = request.headers.get("referer") ?? "";
             const ip = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim();
 
-            const fields: Record<string, any> = { Code: code, UserAgent: ua, Referer: referer, IP: ip };
+            const fields: ScanLogFields = { Code: code, UserAgent: ua, Referer: referer, IP: ip };
             const tablePath = encodeURIComponent(AIRTABLE_SCANS_TABLE_ID || AIRTABLE_SCANS_TABLE_NAME!);
             const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tablePath}`;
 
