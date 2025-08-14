@@ -298,3 +298,5 @@ For questions or support, please contact the development team.
 **Production deployment ready - Vercel auto-deploys on push to main**
 
 **Latest update: Full quiz flow with Airtable integration and TypeScript compliance**
+
+**Force deployment: Adding this line to trigger Vercel rebuild**
