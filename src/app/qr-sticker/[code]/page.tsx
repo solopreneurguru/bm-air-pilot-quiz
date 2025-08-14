@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 export default function Sticker({ params }: { params: { code: string } }) {
     const code = params.code || "qr-mailer-2025";
 
