@@ -1,7 +1,7 @@
 import QRCode from "qrcode";
 
-export async function GET(request: Request, context: { params: { code: string } }) {
-    const code = context.params?.code || "qr-mailer-2025";
+export async function GET(request: Request, { params }: { params: { code: string } }) {
+    const code = params?.code ?? "qr-mailer-2025";
     const origin = new URL(request.url).origin;
     const target = `${origin}/q/${encodeURIComponent(code)}`;
     const svg = await QRCode.toString(target, { type: "svg", margin: 1, errorCorrectionLevel: "M" });
