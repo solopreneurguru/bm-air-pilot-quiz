@@ -3,6 +3,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useQuiz } from "@/context/quiz";
 import { useState } from "react";
 
+interface ApiResponse {
+    ok: boolean;
+    error?: string;
+}
+
 export default function Contact() {
     const router = useRouter();
     const qs = useSearchParams();
@@ -21,14 +26,15 @@ export default function Contact() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ answers, contact, source }),
             });
-            let data: any = {};
+            let data: ApiResponse = { ok: false };
             try { data = await res.json(); } catch { }
             if (!res.ok) throw new Error(data?.error || `Submit failed (${res.status})`);
             reset();
             router.push("/quiz/thank-you");
-        } catch (e: any) {
+        } catch (e: unknown) {
             console.error(e);
-            setErr(e?.message || "Something went wrong");
+            const errorMessage = e instanceof Error ? e.message : "Something went wrong";
+            setErr(errorMessage);
         } finally {
             setBusy(false);
         }
