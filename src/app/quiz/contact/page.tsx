@@ -19,12 +19,15 @@ export default function Contact() {
             const res = await fetch("/api/submitQuiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ answers, contact, source })
+                body: JSON.stringify({ answers, contact, source }),
             });
-            if (!res.ok) throw new Error("Submit failed");
+            let data: any = {};
+            try { data = await res.json(); } catch { }
+            if (!res.ok) throw new Error(data?.error || `Submit failed (${res.status})`);
             reset();
             router.push("/quiz/thank-you");
         } catch (e: any) {
+            console.error(e);
             setErr(e?.message || "Something went wrong");
         } finally {
             setBusy(false);
