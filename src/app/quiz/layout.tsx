@@ -33,8 +33,8 @@ export default function QuizLayout({ children }: { children: React.ReactNode }) 
                 </motion.div>
 
                 {/* Navigation */}
-                <div className="pt-2 text-sm text-neutral-400">
-                    <Link href="/" className="hover:text-neutral-300 transition-colors">Back home</Link>
+                <div className="pt-2 text-sm text-neutral-300">
+                    <Link href="/" className="hover:text-white transition-colors">Back home</Link>
                 </div>
             </div>
         </QuizProvider>
