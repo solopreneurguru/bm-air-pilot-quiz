@@ -2,7 +2,10 @@ import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter"
+});
 
 export const metadata = {
   title: "BMAir Pilot Program",
@@ -16,18 +19,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 text-neutral-900`}>
-        <header className="w-full border-b bg-white/80 backdrop-blur-sm">
-          <div className="mx-auto max-w-2xl px-4 py-3 flex items-center gap-3">
-            {/* Optional logo */}
+      <body className={`${inter.className} min-h-screen bg-neutral-900 text-neutral-100 antialiased`}>
+        <header className="w-full border-b border-neutral-800 bg-neutral-950/50 backdrop-blur-sm">
+          <div className="mx-auto max-w-2xl px-4 py-4 flex items-center gap-3">
             <div className="flex items-center gap-3">
-              <span className="font-semibold text-lg">BMAir Pilot Program</span>
+              <span className="font-bold text-xl text-white">BMAir Pilot Program</span>
             </div>
           </div>
         </header>
         <main className="mx-auto max-w-2xl px-4 py-8">{children}</main>
-        <footer className="mt-12 border-t bg-white/80 backdrop-blur-sm">
-          <div className="mx-auto max-w-2xl px-4 py-4 text-sm text-neutral-500">
+        <footer className="mt-12 border-t border-neutral-800 bg-neutral-950/50">
+          <div className="mx-auto max-w-2xl px-4 py-4 text-sm text-neutral-400">
             © {new Date().getFullYear()} SmartTech USA • BMAir
           </div>
         </footer>

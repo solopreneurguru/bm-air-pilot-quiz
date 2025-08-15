@@ -2,28 +2,32 @@
 import { useRouter } from "next/navigation";
 import { useQuiz } from "@/context/quiz";
 import OptionButton from "@/components/OptionButton";
+import { getQuestionByKey } from "@/quiz/questions";
 
 export default function Q4() {
-    const r = useRouter();
+    const router = useRouter();
     const { setAnswer } = useQuiz();
+    const question = getQuestionByKey("Q4");
+
+    if (!question) return null;
 
     const go = (a: string) => {
         setAnswer("Q4", a);
-        r.push("/quiz/q5");
+        router.push("/quiz/q5");
     };
-
-    const A = ["This quarter", "Next quarter", "Exploring options"];
 
     return (
         <div className="space-y-6">
-            <div className="space-y-2">
-                <h1 className="text-2xl md:text-3xl font-bold">Timeline to start a pilot?</h1>
-                <p className="text-neutral-600 text-sm">When are you looking to begin implementation?</p>
+            <div className="space-y-3">
+                <h1 className="text-2xl md:text-3xl font-bold text-neutral-900">{question.title}</h1>
+                {question.subtitle && (
+                    <p className="text-neutral-600 text-base">{question.subtitle}</p>
+                )}
             </div>
             <div className="space-y-3">
-                {A.map(x => (
-                    <OptionButton key={x} onClick={() => go(x)}>
-                        {x}
+                {question.answers.map(answer => (
+                    <OptionButton key={answer} onClick={() => go(answer)}>
+                        {answer}
                     </OptionButton>
                 ))}
             </div>

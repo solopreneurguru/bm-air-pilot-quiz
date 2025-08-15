@@ -1,20 +1,25 @@
-import { CheckCircle2 } from "lucide-react";
+"use client";
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 
 export default function ThankYou() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-            <div className="bg-white rounded-2xl shadow-sm border p-8 space-y-6 text-center max-w-md">
-                <div className="flex justify-center">
-                    <CheckCircle2 className="w-16 h-16 text-green-500" />
-                </div>
-                <div className="space-y-2">
-                    <h1 className="text-2xl md:text-3xl font-bold">Thanks — we&apos;ll be in touch!</h1>
-                    <p className="text-neutral-700">Your pilot program preferences have been received.</p>
-                </div>
+        <div className="text-center space-y-6">
+            <div className="flex justify-center">
+                <CheckCircle2 className="h-16 w-16 text-sky-500" />
+            </div>
+
+            <div className="space-y-3">
+                <h1 className="text-2xl md:text-3xl font-bold text-neutral-900">Thank you for your application!</h1>
+                <p className="text-neutral-600 text-base max-w-md mx-auto">
+                    We&apos;ve received your BMAir pilot program application and will be in touch within 24 hours to discuss next steps.
+                </p>
+            </div>
+
+            <div className="pt-4">
                 <Link
                     href="/"
-                    className="inline-block rounded-xl border px-5 py-3 text-center font-medium hover:bg-neutral-50 active:scale-[.99] transition-colors"
+                    className="inline-flex items-center px-6 py-3 rounded-2xl border border-neutral-200 text-neutral-700 font-medium hover:bg-neutral-50 hover:border-neutral-300 transition-all focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
                 >
                     Back to Home
                 </Link>

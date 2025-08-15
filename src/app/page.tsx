@@ -3,17 +3,22 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl shadow-sm border p-8 space-y-6">
-        <h1 className="text-2xl md:text-3xl font-bold">Welcome</h1>
-        <p className="text-neutral-700">
-          This site will host our fast, mobile‑friendly pilot program questionnaire.
-        </p>
-        <Link
-          href="/quiz"
-          className="inline-block rounded-xl bg-sky-500 text-white px-5 py-3 text-center font-medium hover:bg-sky-600 active:scale-[.99] transition-colors"
-        >
-          Go to Quiz
-        </Link>
+      <div className="text-center space-y-6">
+        <div className="space-y-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-neutral-900">Welcome to BMAir</h1>
+          <p className="text-xl text-neutral-600 max-w-lg mx-auto">
+            Complete our quick pilot program questionnaire to get started with BMAir air filtration solutions.
+          </p>
+        </div>
+
+        <div className="pt-4">
+          <Link
+            href="/quiz"
+            className="inline-flex items-center px-8 py-4 rounded-2xl bg-sky-500 text-white text-lg font-semibold hover:bg-sky-600 active:scale-[0.99] transition-all focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          >
+            Start Quiz
+          </Link>
+        </div>
       </div>
     </div>
   );

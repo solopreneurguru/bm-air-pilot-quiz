@@ -13,19 +13,28 @@ function ProgressBar() {
 export default function QuizLayout({ children }: { children: React.ReactNode }) {
     return (
         <QuizProvider>
-            <div className="space-y-4">
-                <div className="pt-2">
-                    <ProgressBar />
+            <div className="space-y-6">
+                {/* Compact header with progress */}
+                <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6">
+                    <div className="space-y-4">
+                        <h1 className="text-xl font-bold text-neutral-900">BMAir Pilot Program</h1>
+                        <ProgressBar />
+                    </div>
                 </div>
+
+                {/* Page content with motion */}
                 <motion.div
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.25 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 md:p-8"
                 >
                     {children}
                 </motion.div>
-                <div className="pt-6 text-sm text-neutral-500">
-                    <Link href="/" className="hover:text-neutral-700 transition-colors">Back home</Link>
+
+                {/* Navigation */}
+                <div className="pt-2 text-sm text-neutral-400">
+                    <Link href="/" className="hover:text-neutral-300 transition-colors">Back home</Link>
                 </div>
             </div>
         </QuizProvider>

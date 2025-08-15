@@ -2,28 +2,32 @@
 import { useRouter } from "next/navigation";
 import { useQuiz } from "@/context/quiz";
 import OptionButton from "@/components/OptionButton";
+import { getQuestionByKey } from "@/quiz/questions";
 
 export default function Q3() {
-    const r = useRouter();
+    const router = useRouter();
     const { setAnswer } = useQuiz();
+    const question = getQuestionByKey("Q3");
+
+    if (!question) return null;
 
     const go = (a: string) => {
         setAnswer("Q3", a);
-        r.push("/quiz/q4");
+        router.push("/quiz/q4");
     };
-
-    const A = ["1 machine", "2–3 machines", "4+ machines"];
 
     return (
         <div className="space-y-6">
-            <div className="space-y-2">
-                <h1 className="text-2xl md:text-3xl font-bold">How many units are you considering?</h1>
-                <p className="text-neutral-600 text-sm">Help us understand the scope of your pilot program.</p>
+            <div className="space-y-3">
+                <h1 className="text-2xl md:text-3xl font-bold text-neutral-900">{question.title}</h1>
+                {question.subtitle && (
+                    <p className="text-neutral-600 text-base">{question.subtitle}</p>
+                )}
             </div>
             <div className="space-y-3">
-                {A.map(x => (
-                    <OptionButton key={x} onClick={() => go(x)}>
-                        {x}
+                {question.answers.map(answer => (
+                    <OptionButton key={answer} onClick={() => go(answer)}>
+                        {answer}
                     </OptionButton>
                 ))}
             </div>
