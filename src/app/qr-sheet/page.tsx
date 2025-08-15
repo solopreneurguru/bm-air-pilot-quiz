@@ -1,8 +1,9 @@
 "use client";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 /* eslint-disable @next/next/no-img-element */
-export default function Sheet() {
+function SheetContent() {
     const qs = useSearchParams();
     const code = qs.get("code") || "qr-mailer-2025";
     const count = Math.min(12, Math.max(1, Number(qs.get("count") || 12)));
@@ -51,5 +52,13 @@ export default function Sheet() {
                 ))}
             </div>
         </div>
+    );
+}
+
+export default function Sheet() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SheetContent />
+        </Suspense>
     );
 } 
