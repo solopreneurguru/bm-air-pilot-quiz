@@ -12,7 +12,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ code
         errorCorrectionLevel: "M",
         width: 1024 // hi-res for print
     });
-    return new Response(buf, {
+    return new Response(buf as Uint8Array, {
         headers: {
             "Content-Type": "image/png",
             "Content-Disposition": `inline; filename="${codeValue}.png"`,
