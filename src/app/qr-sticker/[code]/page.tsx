@@ -1,8 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import { useEffect, useState } from "react";
 
-export default function Sticker({ params }: { params: { code: string } }) {
-    const code = params.code || "qr-mailer-2025";
+export default function Sticker({ params }: { params: Promise<{ code: string }> }) {
+    const [code, setCode] = useState("qr-mailer-2025");
+
+    useEffect(() => {
+        params.then(({ code: codeValue }) => {
+            setCode(codeValue || "qr-mailer-2025");
+        });
+    }, [params]);
+
     const onPrint = () => { if (typeof window !== "undefined") window.print(); };
 
     return (
