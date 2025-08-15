@@ -42,3 +42,5 @@ Latest update: Full quiz flow with Airtable integration and TypeScript complianc
 Force deployment: Adding this line to trigger Vercel rebuild
 
 **Latest fix: Next.js 15 route handler compatibility update**
+
+**Buffer type fixes: PNG QR route now uses proper type assertions**
