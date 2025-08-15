@@ -1,9 +1,9 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuiz } from "@/context/quiz";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
-export default function Contact() {
+function ContactForm() {
     const router = useRouter();
     const qs = useSearchParams();
     const source = qs.get("src") || "qr-mailer-2025";
@@ -80,5 +80,13 @@ export default function Contact() {
                 </button>
             </form>
         </div>
+    );
+}
+
+export default function Contact() {
+    return (
+        <Suspense fallback={<div className="bg-white rounded-2xl shadow-sm border p-8 space-y-6">Loading...</div>}>
+            <ContactForm />
+        </Suspense>
     );
 } 
