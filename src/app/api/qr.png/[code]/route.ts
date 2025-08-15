@@ -13,7 +13,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ code
         width: 1024 // hi-res for print
     });
 
-    return new Response(buf as Buffer | Uint8Array, {
+    // Convert Node.js Buffer to Uint8Array for web compatibility
+    const uint8Array = new Uint8Array(buf);
+
+    return new Response(uint8Array, {
         headers: {
             "Content-Type": "image/png",
             "Content-Disposition": `inline; filename="${codeValue}.png"`,
