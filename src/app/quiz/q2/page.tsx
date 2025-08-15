@@ -18,7 +18,7 @@ export default function Q2() {
         <div className="space-y-6">
             <div className="space-y-2">
                 <h1 className="text-2xl md:text-3xl font-bold">Primary air‑quality concern?</h1>
-                <p className="text-neutral-600 text-sm">What's driving your need for air quality solutions?</p>
+                <p className="text-neutral-600 text-sm">What&apos;s driving your need for air quality solutions?</p>
             </div>
             <div className="space-y-3">
                 {A.map(x => (

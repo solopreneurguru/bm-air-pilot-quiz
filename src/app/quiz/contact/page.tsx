@@ -24,8 +24,9 @@ export default function Contact() {
             if (!res.ok) throw new Error("Submit failed");
             reset();
             router.push("/quiz/thank-you");
-        } catch (e: any) {
-            setErr(e?.message || "Something went wrong");
+        } catch (e: unknown) {
+            const errorMessage = e instanceof Error ? e.message : "Something went wrong";
+            setErr(errorMessage);
         } finally {
             setBusy(false);
         }
@@ -70,7 +71,7 @@ export default function Contact() {
                     />
                 </div>
                 {err && <div className="text-red-600 text-sm">{err}</div>}
-                <p className="text-neutral-500 text-sm">We'll only use your info to contact you about the pilot.</p>
+                <p className="text-neutral-500 text-sm">We&apos;ll only use your info to contact you about the pilot.</p>
                 <button
                     disabled={busy}
                     className="w-full rounded-2xl bg-sky-500 text-white px-6 py-4 text-center text-lg font-semibold hover:bg-sky-600 active:scale-[.99] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
