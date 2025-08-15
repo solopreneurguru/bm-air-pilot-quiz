@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 
-export default async function Sticker({ params }: { params: Promise<{ code: string }> }) {
-    const { code } = await params;
-    const codeValue = code ?? "qr-mailer-2025";
+export default function Sticker({ params }: { params: { code: string } }) {
+    const code = params.code || "qr-mailer-2025";
+    const onPrint = () => { if (typeof window !== "undefined") window.print(); };
 
     return (
         <div style={{ padding: "16px" }}>
@@ -18,16 +19,14 @@ export default async function Sticker({ params }: { params: Promise<{ code: stri
         .actions { margin-top: 12px; display: flex; gap: 10px; }
         .btn { padding: 6px 10px; border: 1px solid #ddd; border-radius: 8px; font: 500 10pt system-ui; }
       `}</style>
-
             <div className="card">
                 <div className="title">Scan Me for our<br />Pilot Program Information</div>
-                <img className="qr" alt="QR" src={`/api/qr/${encodeURIComponent(codeValue)}`} />
-                <div className="sub">{codeValue}</div>
+                <img className="qr" alt="QR" src={`/api/qr/${encodeURIComponent(code)}`} loading="eager" decoding="sync" />
+                <div className="sub">{code}</div>
             </div>
-
             <div className="actions">
-                <button className="btn" onClick={() => window.print()}>Print sticker</button>
-                <a className="btn" href={`/api/qr.png/${encodeURIComponent(codeValue)}`} download>Download PNG</a>
+                <button className="btn" onClick={onPrint}>Print sticker</button>
+                <a className="btn" href={`/api/qr.png/${encodeURIComponent(code)}`} download>Download PNG</a>
             </div>
         </div>
     );
