@@ -15,7 +15,8 @@ export default async function Sticker({ params }: { params: Promise<{ code: stri
         .title { font: 600 10pt system-ui, -apple-system, Segoe UI, Roboto, sans-serif; text-align: center; }
         .qr { width: 1.4in; height: 1.4in; }
         .sub { font: 500 7pt system-ui; color: #555; text-align: center; }
-        .print { margin-top: 12px; }
+        .actions { margin-top: 12px; display: flex; gap: 10px; }
+        .btn { padding: 6px 10px; border: 1px solid #ddd; border-radius: 8px; font: 500 10pt system-ui; }
       `}</style>
 
             <div className="card">
@@ -24,7 +25,10 @@ export default async function Sticker({ params }: { params: Promise<{ code: stri
                 <div className="sub">{codeValue}</div>
             </div>
 
-            <button className="print" onClick={() => window.print()}>Print sticker</button>
+            <div className="actions">
+                <button className="btn" onClick={() => window.print()}>Print sticker</button>
+                <a className="btn" href={`/api/qr.png/${encodeURIComponent(codeValue)}`} download>Download PNG</a>
+            </div>
         </div>
     );
 } 
