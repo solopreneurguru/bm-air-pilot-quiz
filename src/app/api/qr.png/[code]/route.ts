@@ -14,6 +14,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ code
     });
 
     // Convert Node.js Buffer to Uint8Array for web compatibility
+    // This ensures Next.js 15 compatibility
     const uint8Array = new Uint8Array(buf);
 
     return new Response(uint8Array, {
