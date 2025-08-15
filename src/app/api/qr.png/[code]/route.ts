@@ -12,7 +12,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ code
         errorCorrectionLevel: "M",
         width: 1024 // hi-res for print
     });
-    return new Response(buf as Uint8Array, {
+
+    // Convert Buffer to ArrayBuffer for Response compatibility
+    const arrayBuffer = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+    if (arrayBuffer instanceof SharedArrayBuffer) {
+        // Convert SharedArrayBuffer to regular ArrayBuffer
+        const regularBuffer = new ArrayBuffer(arrayBuffer.byteLength);
+        new Uint8Array(regularBuffer).set(new Uint8Array(arrayBuffer));
+        return new Response(regularBuffer, {
+            headers: {
+                "Content-Type": "image/png",
+                "Content-Disposition": `inline; filename="${codeValue}.png"`,
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        });
+    }
+
+    return new Response(arrayBuffer, {
         headers: {
             "Content-Type": "image/png",
             "Content-Disposition": `inline; filename="${codeValue}.png"`,
