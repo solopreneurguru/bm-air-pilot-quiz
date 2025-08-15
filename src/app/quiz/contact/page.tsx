@@ -1,20 +1,9 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuiz } from "@/context/quiz";
-import { useState, Suspense } from "react";
+import { useState } from "react";
 
-interface ApiResponse {
-    ok: boolean;
-    error?: string;
-    status?: number;
-}
-
-interface ErrorWithMessage {
-    message: string;
-    [key: string]: unknown;
-}
-
-function ContactForm() {
+export default function Contact() {
     const router = useRouter();
     const qs = useSearchParams();
     const source = qs.get("src") || "qr-mailer-2025";
@@ -32,70 +21,63 @@ function ContactForm() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ answers, contact, source }),
             });
-            let data: ApiResponse = { ok: false };
-            try { data = await res.json(); } catch { }
-            if (!res.ok) {
-                const errorMessage = data?.error || `Submit failed (${res.status})`;
-                throw new Error(errorMessage);
-            }
+            if (!res.ok) throw new Error("Submit failed");
             reset();
             router.push("/quiz/thank-you");
-        } catch (e: unknown) {
-            console.error(e);
-            let errorMessage = "Something went wrong";
-            if (e instanceof Error) {
-                errorMessage = e.message;
-            } else if (typeof e === 'string') {
-                errorMessage = e;
-            } else if (e && typeof e === 'object' && 'message' in e) {
-                errorMessage = String((e as ErrorWithMessage).message);
-            }
-            setErr(errorMessage);
+        } catch (e: any) {
+            setErr(e?.message || "Something went wrong");
         } finally {
             setBusy(false);
         }
     };
 
     return (
-        <form onSubmit={submit} className="space-y-4">
+        <div className="bg-white rounded-2xl shadow-sm border p-8 space-y-6">
             <h1 className="text-2xl md:text-3xl font-bold">How can we reach you?</h1>
-            <input
-                required
-                placeholder="Name"
-                value={contact.name}
-                onChange={e => setContact({ name: e.target.value })}
-                className="w-full rounded-xl border px-4 py-3"
-            />
-            <input
-                required
-                placeholder="Phone"
-                value={contact.phone}
-                onChange={e => setContact({ phone: e.target.value })}
-                className="w-full rounded-xl border px-4 py-3"
-            />
-            <input
-                required
-                type="email"
-                placeholder="Email"
-                value={contact.email}
-                onChange={e => setContact({ email: e.target.value })}
-                className="w-full rounded-xl border px-4 py-3"
-            />
-            {err && <div className="text-red-600">{err}</div>}
-            <button
-                disabled={busy}
-                className="w-full rounded-2xl border px-6 py-4 text-center text-lg font-semibold hover:bg-neutral-50 active:scale-[.99]"
-            >
-                {busy ? "Submitting…" : "Submit"}
-            </button>
-        </form>
-    );
-}
-
-export default function Contact() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <ContactForm />
-        </Suspense>
+            <form onSubmit={submit} className="space-y-4">
+                <div className="space-y-2">
+                    <label htmlFor="name" className="text-sm font-medium text-neutral-700">Name</label>
+                    <input
+                        id="name"
+                        required
+                        placeholder="Your full name"
+                        value={contact.name}
+                        onChange={e => setContact({ name: e.target.value })}
+                        className="w-full rounded-xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-shadow"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label htmlFor="phone" className="text-sm font-medium text-neutral-700">Phone</label>
+                    <input
+                        id="phone"
+                        required
+                        placeholder="Your phone number"
+                        value={contact.phone}
+                        onChange={e => setContact({ phone: e.target.value })}
+                        className="w-full rounded-xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-shadow"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium text-neutral-700">Email</label>
+                    <input
+                        id="email"
+                        required
+                        type="email"
+                        placeholder="your.email@company.com"
+                        value={contact.email}
+                        onChange={e => setContact({ email: e.target.value })}
+                        className="w-full rounded-xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-shadow"
+                    />
+                </div>
+                {err && <div className="text-red-600 text-sm">{err}</div>}
+                <p className="text-neutral-500 text-sm">We'll only use your info to contact you about the pilot.</p>
+                <button
+                    disabled={busy}
+                    className="w-full rounded-2xl bg-sky-500 text-white px-6 py-4 text-center text-lg font-semibold hover:bg-sky-600 active:scale-[.99] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {busy ? "Submitting…" : "Submit"}
+                </button>
+            </form>
+        </div>
     );
 } 
